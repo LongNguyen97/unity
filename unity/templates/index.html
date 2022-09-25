@@ -1,0 +1,44 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style/style.css' %}">
+{% load humanize %}
+UNITY
+<hr/>
+<h3> {{ current_time }} </h3>
+
+<div class="parent">
+    <div class="column">
+        <p>Email list</p>
+        <b>{{ all_mails }}</b>
+    </div>
+    <div class="column">
+        <p>New this month</p>
+        <b>{{ all_emails_this_month }}</b>
+    </div>
+    <div class="column">
+        <p>Unsubscribed</p>
+        <p><b>{{ unsubscribed }}</b></p>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div style=" height:700px;overflow-y:auto;">
+<table>
+    <tr>
+        <th>Email ID</th>
+        <th>Timestamp</th>
+        <th>Status</th>
+    </tr>
+    {% for email in display_mail %}
+        <tr>
+            <td><p>{{ email.user_mail }}</p></td>
+            <td><p>{{ email.cre_dt|naturaltime }}</p></td>
+            <td><p>{{ email.status }}</p></td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+
+</div>
