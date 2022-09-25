@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  unity:
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: .
+        target: /code
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: python -m celery -A unity worker -l info
+    volumes:
+      - type: bind
+        source: .
+        target: /code
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-%dn#y8@=sfs4nh-_%=yf#!2yp07$ya7m7*fi59z&%pe8)!v8ap
+    depends_on:
+      - redis
+
+  celery-beat:
+    build: .
+    command: python -m celery -A unity beat -l info
+    volumes:
+      - type: bind
+        source: .
+        target: /code
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-%dn#y8@=sfs4nh-_%=yf#!2yp07$ya7m7*fi59z&%pe8)!v8ap
+    depends_on:
+      - redis
