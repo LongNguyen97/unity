@@ -1,0 +1,44 @@
+import tensorflow as tf
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+import pandas as pd
+
+# load the dataset
+df = pd.read_csv('comments.csv')
+
+# preprocess the text data
+tokenizer = Tokenizer(num_words=10000)
+tokenizer.fit_on_texts(df['comment'])
+X = tokenizer.texts_to_sequences(df['comment'])
+X = pad_sequences(X, maxlen=100)
+
+# convert the labels to categorical format
+y = tf.keras.utils.to_categorical(df['from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Embedding, Flatten
+
+# define the model
+model = Sequential()
+model.add(Embedding(10000, 32, input_length=100))
+model.add(Flatten())
+model.add(Dense(16, activation='relu'))
+model.add(Dense(2, activation='softmax'))
+
+# compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+# train the model
+model.fit(X, y, epochs=10, batch_size= # predict the labels of new comments
+new_comments = ["This product is great, I love it", 
+                "I'm having trouble with my payment"]
+X_new = tokenizer.texts_to_sequences(new_comments)
+X_new = pad_sequences(X_new, maxlen=100)
+y_new = model.predict(X_new)
+
+# filter out the comments related to payment
+for i in range(len(new_comments)):
+    if y_new[i][1] > 0.5:
+        print(new_comments[i], "is related to payment")
+    else:
+        print(new_comments[i], "is not related to payment")
+
