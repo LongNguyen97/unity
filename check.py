@@ -90,3 +90,10 @@ async def main():
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
+    
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+sia = SentimentIntensityAnalyzer()
+text = "A test to filter bad words"
+scores = sia.polarity_scores(text)
+print(scores)
